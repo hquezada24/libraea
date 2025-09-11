@@ -6,12 +6,12 @@ const Header = () => {
       <div className={styles.logo}>
         <h1>Libraea</h1>
       </div>
-      {/* <div className={styles.search}>
+      <div className={styles.search}>
         <form action="">
           <input type="text" placeholder="Search for your next adventure..." />
           <button>O</button>
         </form>
-      </div> */}
+      </div>
     </header>
   );
 };
