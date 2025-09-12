@@ -13,11 +13,6 @@
   background-color: #0b3c32;
 }
 
-.header {
-  position: absolute;
-  top: 0;
-}
-
 .logo {
   width: 30%;
   color: cornsilk;
@@ -26,7 +21,6 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); */
 }
 
 .search {
@@ -43,10 +37,8 @@
   min-width: 310px;
   font-size: 1.3rem;
   font-family: inherit;
-  border: none;
-  /* border: 2px solid #ffffff; */
   border: 2px solid #e6d6c6;
-  background-color: rgba(132, 232, 162, 0.3);
+  background-color: rgba(132, 232, 162, 0.2);
   color: cornsilk;
 }
 
@@ -57,7 +49,7 @@
 }
 
 .search form input::placeholder {
-  color: cornsilk;
+  color: #0b3c32;
 }
 
 .search form button {
@@ -70,18 +62,22 @@
   transition: all 0.3s ease-in-out;
 }
 
-/* Base button styles */
-/* .button {
-  background-color: cornsilk; 
-  padding: 12px;
-  border: none;
-  border-radius: 50%; 
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease-in-out;
-} */
+.search form button:hover {
+  background-color: #fff0c2;
+  animation: pulse 1s ease-in-out;
+}
+
+.icon {
+  color: #0b3c32;
+}
+
+.search form button:active {
+  transform: scale(0.9);
+}
+
+.search form button:hover .icon {
+  animation: wiggle 0.5s ease-in-out;
+}
 
 .icons {
   width: 30%;
@@ -94,7 +90,6 @@
   height: 100%;
 }
 
-/* Define the keyframes for the pulse animation */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -110,7 +105,6 @@
   }
 }
 
-/* Define the keyframes for the icon wiggle */
 @keyframes wiggle {
   0%,
   100% {
@@ -124,24 +118,33 @@
   }
 }
 
-/* Hover effects for the button */
-.search form button:hover {
-  background-color: #fff0c2; /* A slightly darker cornsilk */
-  animation: pulse 1s ease-in-out; /* Apply the pulse animation on hover */
-}
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 30vh;
+    height: auto;
+  }
 
-/* Active state (when clicked) */
-.search form button:active {
-  transform: scale(0.9); /* Slight "press down" effect */
-}
+  .logo {
+    font-size: 0.8rem;
+  }
 
-/* Base icon styles */
-.icon {
-  color: #0b3c32; /* Dark gray for contrast against cornsilk */
-  transition: transform 0.3s ease-in-out;
-}
+  .search {
+    display: flex;
+  }
 
-/* Hover effect for the icon */
-.search form button:hover .icon {
-  animation: wiggle 0.5s ease-in-out; /* Apply the wiggle animation on hover */
+  .search form input {
+    margin-bottom: 1rem;
+    min-width: 2rem;
+    width: clamp(200px, 70vw, 300px);
+  }
+
+  .icons {
+    height: 4rem;
+    order: -1;
+  }
 }
