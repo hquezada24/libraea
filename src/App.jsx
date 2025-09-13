@@ -1,11 +1,16 @@
 import "./App.css";
 import Home from "./pages/Home";
+import SearchBook from "./pages/SearchBook";
+import { SearchProvider } from "./context/SearchProvider";
 
 function App() {
   return (
-    <div className="app-container">
-      <Home />
-    </div>
+    <SearchProvider>
+      <div className="app-container">
+        <Home />
+        <SearchBook />
+      </div>
+    </SearchProvider>
   );
 }
 
