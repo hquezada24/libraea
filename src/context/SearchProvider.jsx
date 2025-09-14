@@ -35,7 +35,7 @@ export const SearchProvider = ({ children }) => {
       // numFound is the total number of matches found
       setMore(BookData.offset + BookData.docs.length < BookData.numFound);
 
-      console.log(BookData);
+      //console.log(BookData);
       setError(null); // Clear any previous errors
     } catch (err) {
       setError(err.message);
