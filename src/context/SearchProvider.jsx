@@ -44,12 +44,32 @@ export const SearchProvider = ({ children }) => {
     }
   };
 
+  const fetchBookCover = async (olid, size = "M") => {
+    if (!olid) return null;
+
+    try {
+      const response = await fetch(
+        `https://covers.openlibrary.org/b/olid/${olid}-${size}.jpg`
+      );
+      if (response.ok) {
+        return response.url; // Return the URL of the image
+      } else {
+        console.warn(`Cover not found for OLID: ${olid}`);
+        return null; // Return null if no cover is found
+      }
+    } catch (error) {
+      console.error("Failed to fetch book cover:", error);
+      return null;
+    }
+  };
+
   const value = {
     searchResults,
     loading,
     error,
     more,
     searchBooks,
+    fetchBookCover,
   };
 
   return (

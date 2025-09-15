@@ -16,13 +16,13 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.bookCover {
+/* .bookCover {
   width: 150px;
-  height: 200px; /* Slightly reduce height for better proportion */
+  height: 200px;
   overflow: hidden;
   background-color: orange;
-  object-fit: cover; /* If using actual images */
-}
+  object-fit: cover; 
+} */
 
 .info {
   padding: 15px;

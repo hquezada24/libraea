@@ -14,6 +14,7 @@ const SearchBook = () => {
   if (searchResults.length === 0)
     return <div className={styles.notFound}>No books found.</div>;
 
+  console.log(searchResults);
   return (
     <div className={styles.results}>
       {searchResults.map((book) => {
@@ -23,6 +24,7 @@ const SearchBook = () => {
             title={book.title}
             author={book.author_name}
             year={book.first_publish_year}
+            olid={book.cover_edition_key}
           />
         );
       })}
