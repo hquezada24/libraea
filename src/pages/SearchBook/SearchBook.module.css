@@ -10,7 +10,8 @@
 
 .loading,
 .error,
-.notFound {
+.notFound,
+.prompt {
   grid-column: 1 / -1; /* Span all columns */
   display: flex;
   justify-content: center;

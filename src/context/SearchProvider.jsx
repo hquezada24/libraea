@@ -4,12 +4,14 @@ import { SearchContext } from "./SearchContext";
 export const SearchProvider = ({ children }) => {
   const RESULTS_PER_PAGE = 10;
   const [searchResults, setSearchResults] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [more, setMore] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const searchBooks = async (searchQuery, pageNum = 1) => {
     setLoading(true);
+    setHasSearched(true);
     try {
       const offset = (pageNum - 1) * RESULTS_PER_PAGE;
       const response = await fetch(
@@ -68,6 +70,7 @@ export const SearchProvider = ({ children }) => {
     loading,
     error,
     more,
+    hasSearched,
     searchBooks,
     fetchBookCover,
   };
