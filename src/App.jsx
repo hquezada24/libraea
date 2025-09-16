@@ -1,15 +1,15 @@
 import "./App.css";
-import Home from "./pages/Home";
-import SearchBook from "./pages/SearchBook/SearchBook";
+import Header from "./components/common/Header/Header";
 import { SearchProvider } from "./context/SearchProvider";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <SearchProvider>
-      <div className="app-container">
-        <Home />
-        <SearchBook />
-      </div>
+      <Header />
+      <main className="app-container">
+        <Outlet />
+      </main>
     </SearchProvider>
   );
 }

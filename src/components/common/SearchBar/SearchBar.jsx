@@ -3,24 +3,29 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { useSearch } from "../../../hooks/useSearch";
 import useMobile from "../../../hooks/useMobile";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
   const { searchBooks } = useSearch();
   const isMobile = useMobile(768);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setQuery(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    searchBooks(query);
+    if (query.trim()) {
+      await searchBooks(query);
+      navigate("/search");
+    }
   };
 
   return (
     <div className={styles.search}>
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={query}
@@ -29,7 +34,7 @@ const SearchBar = () => {
             isMobile ? "Search a book" : "Search for your next adventure..."
           }
         />
-        <button onClick={handleSubmit}>
+        <button type="submit">
           <Search className={styles.icon} />
         </button>
       </form>
