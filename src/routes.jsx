@@ -1,5 +1,5 @@
 import App from "./App";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import SearchBook from "./pages/SearchBook/SearchBook";
 
 const routes = [
@@ -8,7 +8,7 @@ const routes = [
     element: <App />,
     children: [
       {
-        index: true, // This makes Home the default child route
+        index: true,
         element: <Home />,
       },
       {

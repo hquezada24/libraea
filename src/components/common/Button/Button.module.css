@@ -1,0 +1,63 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5c4033; /* Dark brown */
+  background-color: #0b3c32;
+  color: #fff8dc; /* Cornsilk */
+  padding: 1.2rem 2.8rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 2px solid #a97155;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.link {
+  color: #fff8dc;
+  text-decoration: none;
+}
+
+.button:hover {
+  background-color: #8b5a2b; /* Lighter brown */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  color: #fff8dc;
+}
+
+.button:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+.button:hover .icon {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+.button .icon {
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 248, 220, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 15px rgba(255, 248, 220, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 248, 220, 0);
+  }
+}
+
+.button:hover {
+  animation: pulse 1.5s ease-in-out infinite;
+}
