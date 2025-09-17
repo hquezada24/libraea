@@ -1,5 +1,6 @@
 import styles from "./Header.module.css";
 import SearchBar from "../SearchBar/SearchBar";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -10,7 +11,7 @@ const Header = () => {
       </div>
       <SearchBar />
       <div className={styles.link}>
-        <a href="">My Library</a>
+        <Link to="/my-library">My Library</Link>
       </div>
     </header>
   );
