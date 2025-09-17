@@ -4,12 +4,14 @@ import { Search } from "lucide-react";
 import { useSearch } from "../../../hooks/useSearch";
 import useMobile from "../../../hooks/useMobile";
 import { useNavigate } from "react-router-dom";
+import { useBooks } from "../../../hooks/useBooks";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
   const { searchBooks } = useSearch();
   const isMobile = useMobile(768);
   const navigate = useNavigate();
+  const { addToRecentlySearched } = useBooks();
 
   const handleChange = (e) => {
     setQuery(e.target.value);
@@ -17,6 +19,12 @@ const SearchBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    addToRecentlySearched({
+      type: "search",
+      query: query,
+      timestamp: new Date().toISOString(),
+      id: `search-${Date.now()}`,
+    });
     if (query.trim()) {
       await searchBooks(query);
       navigate("/search");

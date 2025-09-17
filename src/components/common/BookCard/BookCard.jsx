@@ -2,17 +2,26 @@ import styles from "./BookCard.module.css";
 import { useState, useEffect } from "react";
 import { useSearch } from "../../../hooks/useSearch";
 import { useBooks } from "../../../hooks/useBooks";
-import { Star } from "lucide-react";
+import { Star, Bookmark } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
-import { Bookmark } from "lucide-react";
 
 const BookCard = ({ book }) => {
   const { fetchBookCover } = useSearch();
-  const { addBook, removeBook, isBookSaved } = useBooks();
+  const {
+    addToFavorites,
+    removeFromFavorites,
+    addToWantToRead,
+    removeFromWantToRead,
+    addToRecentlySearched,
+    isFavorite,
+    isInWantToRead,
+  } = useBooks();
   const [coverUrl, setCoverUrl] = useState(null);
   const [isLoadingCover, setIsLoadingCover] = useState(false);
-  const [like, setLike] = useState(false);
-  const [save, setSave] = useState(false);
+
+  // Derive states directly from context
+  const isLiked = isFavorite(book.key);
+  const isSaved = isInWantToRead(book.key);
 
   useEffect(() => {
     let isMounted = true; // Flag to prevent state updates on an unmounted component
@@ -41,15 +50,18 @@ const BookCard = ({ book }) => {
   }, [fetchBookCover, book.cover_edition_key]); // Re-run if the olid changes
 
   const handleLike = () => {
-    setLike((prev) => !prev);
-    if (isBookSaved(book.key)) {
-      removeBook(book.key);
+    if (isLiked) {
+      removeFromFavorites(book.key);
     } else {
-      addBook(book);
+      addToFavorites(book);
     }
   };
   const handleSave = () => {
-    setSave((prev) => !prev);
+    if (isSaved) {
+      removeFromWantToRead(book.key);
+    } else {
+      addToWantToRead(book);
+    }
   };
 
   return (
@@ -82,16 +94,24 @@ const BookCard = ({ book }) => {
         <div className="year">{book.year}</div>
       </div>
       <div className="buttons">
-        <button className={styles.favorite} onClick={handleLike}>
+        <button
+          className={styles.favorite}
+          onClick={handleLike}
+          title={isLiked ? "Remove from favorites" : "Add to favorites"}
+        >
           <Star
             className={styles.favoriteIcon}
-            fill={like ? "gold" : "transparent"}
+            fill={isLiked ? "gold" : "transparent"}
           />
         </button>
-        <button className={styles.save} onClick={handleSave}>
+        <button
+          className={styles.save}
+          onClick={handleSave}
+          title={isSaved ? "Remove from want to read" : "Add to want to read"}
+        >
           <Bookmark
             className={styles.saveIcon}
-            fill={save ? "#6495ED" : "transparent"}
+            fill={isSaved ? "#6495ED" : "transparent"}
           />
         </button>
       </div>

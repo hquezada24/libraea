@@ -12,6 +12,7 @@ export const SearchProvider = ({ children }) => {
   const searchBooks = async (searchQuery, pageNum = 1) => {
     setLoading(true);
     setHasSearched(true);
+
     try {
       const offset = (pageNum - 1) * RESULTS_PER_PAGE;
       const response = await fetch(

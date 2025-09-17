@@ -23,14 +23,16 @@ const sanitizeBookForStorage = (book) => {
     first_publish_year,
     cover_edition_key,
     cover_i,
-    // Only include properties that are primitive values or simple arrays
   };
 };
 
 const BOOKS_ACTIONS = {
   LOAD: "LOAD",
-  ADD: "ADD",
-  REMOVE: "REMOVE",
+  ADD_TO_FAVORITES: "ADD_TO_FAVORITES",
+  REMOVE_FROM_FAVORITES: "REMOVE_FROM_FAVORITES",
+  ADD_TO_WANT_TO_READ: "ADD_TO_WANT_TO_READ",
+  REMOVE_FROM_WANT_TO_READ: "REMOVE_FROM_WANT_TO_READ",
+  ADD_TO_RECENTLY_SEARCHED: "ADD_TO_RECENTLY_SEARCHED",
   CLEAR: "CLEAR",
 };
 
@@ -38,29 +40,98 @@ const booksReducer = (state, action) => {
   switch (action.type) {
     case BOOKS_ACTIONS.LOAD:
       return action.payload;
-    case BOOKS_ACTIONS.ADD: {
-      const exists = state.some((book) => book.key === action.payload.key);
+    case BOOKS_ACTIONS.ADD_TO_FAVORITES: {
+      const exists = state.favorites.some(
+        (book) => book.key === action.payload.key
+      );
       if (exists) return state;
       const cleanBook = sanitizeBookForStorage(action.payload);
-      return [...state, cleanBook];
+      return {
+        ...state,
+        favorites: [...state.favorites, cleanBook],
+      };
     }
-    case BOOKS_ACTIONS.REMOVE:
-      return state.filter((book) => book.key !== action.payload);
-    case BOOKS_ACTIONS.CLEAR:
-      return [];
+    case BOOKS_ACTIONS.REMOVE_FROM_FAVORITES:
+      return {
+        ...state,
+        favorites: state.favorites.filter(
+          (book) => book.key !== action.payload
+        ),
+      };
+    case BOOKS_ACTIONS.ADD_TO_WANT_TO_READ: {
+      const exists = state.wantToRead.some(
+        (book) => book.key === action.payload.key
+      );
+      if (exists) return state;
+      const cleanBook = sanitizeBookForStorage(action.payload);
+      return {
+        ...state,
+        wantToRead: [...state.wantToRead, cleanBook],
+      };
+    }
+    case BOOKS_ACTIONS.REMOVE_FROM_WANT_TO_READ: {
+      return {
+        ...state,
+        wantToRead: state.wantToRead.filter(
+          (book) => book.key !== action.payload
+        ),
+      };
+    }
+    case BOOKS_ACTIONS.ADD_TO_RECENTLY_SEARCHED: {
+      const exists = state.recentlySearched.some(
+        (searchQuery) => searchQuery.id === action.payload.id
+      );
+      if (exists) {
+        // Move to front if already exists
+        const filtered = state.recentlySearched.filter(
+          (searchQuery) => searchQuery.id !== action.payload.id
+        );
+        return {
+          ...state,
+          recentlySearched: [action.payload, ...filtered].slice(0, 5), // Keep only last 20
+        };
+      }
+
+      return {
+        ...state,
+        recentlySearched: [action.payload, ...state.recentlySearched].slice(
+          0,
+          5
+        ), // Keep only last 20
+      };
+    }
+    case BOOKS_ACTIONS.CLEAR: {
+      return {
+        ...state,
+        [action.payload]: [],
+      };
+    }
     default:
       return state;
   }
 };
 
+const initialState = {
+  favorites: [],
+  wantToRead: [],
+  recentlySearched: [],
+};
+
 export const BooksProvider = ({ children }) => {
-  const [savedBooks, dispatch] = useReducer(booksReducer, []);
+  const [savedBooks, dispatch] = useReducer(booksReducer, initialState);
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        dispatch({ type: BOOKS_ACTIONS.LOAD, payload: JSON.parse(stored) });
+        const parsedData = JSON.parse(stored);
+        // Ensure all required properties exist
+        const completeData = {
+          favorites: parsedData.favorites || [],
+          wantToRead: parsedData.wantToRead || [],
+          recentlySearched: parsedData.recentlySearched || [],
+        };
+        dispatch({ type: BOOKS_ACTIONS.LOAD, payload: completeData });
       } catch (error) {
         console.error("Failed to parse saved books:", error);
       }
@@ -71,35 +142,64 @@ export const BooksProvider = ({ children }) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(savedBooks));
   }, [savedBooks]);
 
-  const addBook = (book) => {
-    dispatch({ type: BOOKS_ACTIONS.ADD, payload: book });
+  // Helper functions
+  const addToFavorites = (book) => {
+    dispatch({ type: BOOKS_ACTIONS.ADD_TO_FAVORITES, payload: book });
   };
 
-  const removeBook = (bookKey) => {
-    dispatch({ type: BOOKS_ACTIONS.REMOVE, payload: bookKey });
+  const removeFromFavorites = (bookKey) => {
+    dispatch({ type: BOOKS_ACTIONS.REMOVE_FROM_FAVORITES, payload: bookKey });
   };
 
-  const clearBooks = () => {
-    dispatch({ type: BOOKS_ACTIONS.CLEAR });
+  const addToWantToRead = (book) => {
+    dispatch({ type: BOOKS_ACTIONS.ADD_TO_WANT_TO_READ, payload: book });
   };
-  const isBookSaved = (bookKey) => {
-    return savedBooks.some((book) => book.key === bookKey);
+
+  const removeFromWantToRead = (bookKey) => {
+    dispatch({
+      type: BOOKS_ACTIONS.REMOVE_FROM_WANT_TO_READ,
+      payload: bookKey,
+    });
   };
-  const seeBookList = () => {
-    return savedBooks;
+  const addToRecentlySearched = (query) => {
+    dispatch({ type: BOOKS_ACTIONS.ADD_TO_RECENTLY_SEARCHED, payload: query });
   };
-  const clearList = () => {
-    dispatch({ type: BOOKS_ACTIONS.CLEAR });
+
+  const clearList = (listName) => {
+    dispatch({ type: BOOKS_ACTIONS.CLEAR, payload: listName });
+  };
+
+  // Check functions
+  const isFavorite = (bookKey) => {
+    return savedBooks.favorites.some((book) => book.key === bookKey);
+  };
+
+  const isInWantToRead = (bookKey) => {
+    return savedBooks.wantToRead.some((book) => book.key === bookKey);
+  };
+
+  const isInRecentlySearched = (bookKey) => {
+    return savedBooks.recentlySearched.some((book) => book.key === bookKey);
   };
 
   const value = {
-    savedBooks,
-    addBook,
-    removeBook,
-    clearBooks,
-    isBookSaved,
-    seeBookList,
+    // Data
+    favorites: savedBooks.favorites,
+    wantToRead: savedBooks.wantToRead,
+    recentlySearched: savedBooks.recentlySearched,
+
+    // Actions
+    addToFavorites,
+    removeFromFavorites,
+    addToWantToRead,
+    removeFromWantToRead,
+    addToRecentlySearched,
     clearList,
+
+    // Checks
+    isFavorite,
+    isInWantToRead,
+    isInRecentlySearched,
   };
 
   return (

@@ -4,7 +4,7 @@ import BookCard from "../../components/common/BookCard/BookCard";
 import { useBooks } from "../../hooks/useBooks";
 
 const SearchBook = () => {
-  const { clearList, seeBookList } = useBooks();
+  const { clearList, favorites, wantToRead, recentlySearched } = useBooks();
   const { searchResults, loading, error, hasSearched } = useSearch();
   if (loading)
     return (
@@ -23,11 +23,13 @@ const SearchBook = () => {
   if (searchResults.length === 0)
     return <div className={styles.notFound}>No books found.</div>;
 
-  const handleClear = () => {
-    clearList();
+  const handleClear = (listName) => {
+    clearList(listName);
   };
   function booklist() {
-    console.log(seeBookList());
+    console.log(favorites);
+    console.log(wantToRead);
+    console.log(recentlySearched);
   }
   booklist();
   console.log(searchResults);
@@ -36,7 +38,11 @@ const SearchBook = () => {
       {searchResults.map((book) => {
         return <BookCard key={book.key} book={book} />;
       })}
-      <button onClick={handleClear}>clear</button>
+      <button onClick={() => handleClear("favorites")}>clear fav</button>
+      <button onClick={() => handleClear("wantToRead")}>clear saved</button>
+      <button onClick={() => handleClear("recentlySearched")}>
+        clear searched
+      </button>
     </div>
   );
 };
