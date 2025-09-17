@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column; /* Stack items vertically */
   align-items: center; /* Center content horizontally */
+  justify-content: space-between;
   min-height: 350px; /* Set a minimum height instead */
 }
 
@@ -16,14 +17,20 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* .bookCover {
+.bookCover {
   width: 150px;
   height: 200px;
   overflow: hidden;
-  background-color: orange;
-  object-fit: cover; 
-} */
-
+  object-fit: cover;
+}
+.noCover {
+  width: 100%;
+  height: 100%;
+  border: 1px solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .info {
   padding: 15px;
   display: flex;
@@ -65,4 +72,13 @@
   display: inline-block;
   width: fit-content;
   font-weight: 600;
+}
+
+.favorite,
+.save {
+  border-radius: 50%;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
 }
