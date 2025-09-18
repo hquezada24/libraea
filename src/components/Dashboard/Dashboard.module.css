@@ -1,0 +1,45 @@
+.dashboard {
+  margin: 1rem 0;
+  padding: 1rem 0;
+  font-size: 1.3rem;
+}
+.favorites,
+.wantToRead,
+.recentlySearched {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  width: 100%;
+}
+
+.wantToRead {
+  margin: 3rem 0;
+}
+.grid {
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.grid,
+.flex {
+  min-height: 350px;
+  padding: 1rem;
+}
+
+.searches {
+  min-height: 150px;
+}
+
+.btn {
+  grid-column-start: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

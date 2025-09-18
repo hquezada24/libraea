@@ -1,46 +1,23 @@
 .button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #5c4033; /* Dark brown */
-  background-color: #0b3c32;
-  color: #fff8dc; /* Cornsilk */
-  padding: 1.2rem 2.8rem;
+  display: flex;
+  padding: 1rem 1.5rem;
   font-size: 1.3rem;
-  font-weight: 600;
-  text-decoration: none;
-  border-radius: 50px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  border: 2px solid #a97155;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
   border: none;
-  position: relative;
-  overflow: hidden;
+  border-radius: 50px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.35s;
+  box-sizing: border-box;
 }
 
 .link {
-  color: #fff8dc;
+  color: cornsilk;
+  font-size: 1.3rem;
+  font-weight: 700;
   text-decoration: none;
-}
-
-.button:hover {
-  background-color: #8b5a2b; /* Lighter brown */
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  color: #fff8dc;
-}
-
-.button:active {
-  transform: translateY(-2px) scale(0.98);
-}
-
-.button:hover .icon {
-  animation: wiggle 0.5s ease-in-out;
-}
-
-.button .icon {
-  margin-left: 10px;
-  transition: transform 0.3s ease;
 }
 
 @keyframes pulse {
@@ -58,6 +35,21 @@
   }
 }
 
+.button {
+  background-image: linear-gradient(
+    to right,
+    seagreen 0%,
+    #0b3c32 51%,
+    #1b4d3e 100%
+  );
+  background-size: 200% auto;
+  background-position: left top;
+  border-color: transparent;
+  color: #464646;
+}
+
 .button:hover {
-  animation: pulse 1.5s ease-in-out infinite;
+  background-position: right bottom;
+  animation: pulse 1s ease-in-out;
+  color: #000;
 }

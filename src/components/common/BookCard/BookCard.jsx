@@ -12,7 +12,6 @@ const BookCard = ({ book }) => {
     removeFromFavorites,
     addToWantToRead,
     removeFromWantToRead,
-    addToRecentlySearched,
     isFavorite,
     isInWantToRead,
   } = useBooks();
@@ -91,7 +90,7 @@ const BookCard = ({ book }) => {
           </div>
         )}
         {/* <div className="author">{author}</div> */}
-        <div className="year">{book.year}</div>
+        <div className="year">{book.first_publish_year}</div>
       </div>
       <div className="buttons">
         <button

@@ -13,15 +13,7 @@ const Hero = () => {
           ? "Save favorites, track your progress..."
           : "Discover, organize, and celebrate your literary journey with the ultimate book tracking experience"}
       </h3>
-      <Button text={"View My Library"} />
-      <button
-        class={styles.likeButton}
-        data-post-id="12345"
-        aria-pressed="false"
-      >
-        <span class={styles.icon}>♡</span>
-        <span class={styles.count}>1,237</span>
-      </button>
+      <Button text={"View My Library"} link="/my-library" />
     </div>
   );
 };

@@ -7,11 +7,15 @@ const Header = () => {
     <header className={styles.header}>
       <div className={styles.logo}>
         <img src="../../../src/assets/griffin.png" alt="" />
-        <h1>Libraea</h1>
+        <Link to={"/"}>
+          <h1>Libraea</h1>
+        </Link>
       </div>
       <SearchBar />
       <div className={styles.link}>
-        <Link to="/my-library">My Library</Link>
+        <Link to="/my-library" className={styles.library}>
+          My Library
+        </Link>
       </div>
     </header>
   );
