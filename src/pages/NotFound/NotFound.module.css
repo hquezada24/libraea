@@ -1,0 +1,27 @@
+.notFound {
+  background-image: url("../../assets/biblioteca2.png");
+  min-height: 100vh;
+  background-size: cover; /* This replaces object-fit */
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  color: cornsilk;
+}
+
+.nothing {
+  margin-top: 10rem;
+  width: 500px;
+  display: flex;
+  align-items: center;
+}
+
+button {
+  height: 50px;
+  padding: 0.5rem 1rem;
+}
+
+h2 {
+  margin-right: 2rem;
+}
