@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useState } from "react";
 import { BooksContext } from "./BooksContext";
 
 const STORAGE_KEY = "savedBooks";
@@ -119,6 +119,7 @@ const initialState = {
 
 export const BooksProvider = ({ children }) => {
   const [savedBooks, dispatch] = useReducer(booksReducer, initialState);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -136,11 +137,14 @@ export const BooksProvider = ({ children }) => {
         console.error("Failed to parse saved books:", error);
       }
     }
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedBooks));
-  }, [savedBooks]);
+    if (isLoaded) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(savedBooks));
+    }
+  }, [savedBooks, isLoaded]);
 
   // Helper functions
   const addToFavorites = (book) => {

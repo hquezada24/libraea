@@ -14,6 +14,9 @@ const MyLibrary = () => {
 
       <div className="options">
         <button
+          className={`${styles.favBtn} ${
+            activeOption === "favorites" ? styles.fOn : styles.fOff
+          }`}
           onClick={() => {
             setActiveOption("favorites");
           }}
@@ -21,6 +24,9 @@ const MyLibrary = () => {
           Favorites
         </button>
         <button
+          className={`${styles.wtrBtn} ${
+            activeOption === "favorites" ? styles.wtrOff : styles.wtrOn
+          }`}
           onClick={() => {
             setActiveOption("wantToRead");
           }}

@@ -26,3 +26,49 @@
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 25px;
 }
+
+.favBtn,
+.wtrBtn {
+  padding: 0.5rem 1rem;
+  width: 150px;
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+}
+.favBtn {
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
+.wtrBtn {
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+
+.fOn {
+  border: 1px solid #fcf55f;
+  background-color: #fcf55f;
+}
+
+.fOff {
+  background-color: cornsilk;
+  border: 1px solid #a9a9a9;
+  color: #a9a9a9;
+}
+
+.wtrOn {
+  border: 1px solid cornflowerblue;
+  background-color: cornflowerblue;
+  color: cornsilk;
+}
+.wtrOff {
+  background-color: cornsilk;
+  border: 1px solid #a9a9a9;
+  border-left: none;
+  color: #a9a9a9;
+}
+
+@media (max-width: 768px) {
+  .library {
+    padding: 1rem 0;
+  }
+}

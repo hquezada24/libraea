@@ -5,6 +5,8 @@ import { useSearch } from "../../../hooks/useSearch";
 import useMobile from "../../../hooks/useMobile";
 import { useNavigate } from "react-router-dom";
 import { useBooks } from "../../../hooks/useBooks";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
@@ -12,6 +14,14 @@ const SearchBar = () => {
   const isMobile = useMobile(768);
   const navigate = useNavigate();
   const { addToRecentlySearched } = useBooks();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Clear search input when navigating away from search page
+    if (location.pathname !== "/search") {
+      setQuery("");
+    }
+  }, [location.pathname]);
 
   const handleChange = (e) => {
     setQuery(e.target.value);

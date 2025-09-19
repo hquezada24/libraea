@@ -2,6 +2,7 @@ import { useSearch } from "../../hooks/useSearch";
 import styles from "./SearchBook.module.css";
 import BookCard from "../../components/common/BookCard/BookCard";
 import { useBooks } from "../../hooks/useBooks";
+import { ScrollRestoration } from "react-router-dom";
 
 const SearchBook = () => {
   const { clearList, favorites, wantToRead, recentlySearched } = useBooks();
@@ -35,6 +36,7 @@ const SearchBook = () => {
   console.log(searchResults);
   return (
     <div className={styles.results}>
+      <ScrollRestoration />
       {searchResults.map((book) => {
         return <BookCard key={book.key} book={book} />;
       })}
