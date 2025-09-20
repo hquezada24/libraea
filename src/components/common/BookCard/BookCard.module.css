@@ -35,7 +35,8 @@
   padding: 15px;
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Space between elements */
+  align-items: center;
+  gap: 8px;
   width: 100%;
 }
 
@@ -43,7 +44,6 @@
   font-size: 1.2rem;
   font-weight: 700;
   margin: 0;
-  /* color: #2d3748; */
   line-height: 1.4;
   transition: color 0.2s ease;
   display: -webkit-box;
@@ -52,7 +52,7 @@
 }
 
 .bookCard:hover .title:hover {
-  color: seagreen; /* Blue highlight on hover */
+  color: seagreen;
 }
 
 .author {
@@ -81,4 +81,101 @@
   border: none;
   cursor: pointer;
   background-color: transparent;
+}
+
+.loadingCover {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e0e0e0;
+  border-top: 2px solid #666;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.coverImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.noCover {
+  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.noCoverIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.noCoverText {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.authors {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0;
+  justify-content: center;
+  width: 100%;
+}
+
+.actionButton {
+  padding: 8px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.actionButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  transform: scale(1.1);
+}
+
+.actionButton:active {
+  transform: scale(0.95);
+}
+
+.favoriteActive {
+  background-color: rgba(255, 215, 0, 0.1);
+}
+
+.saveActive {
+  background-color: rgba(100, 149, 237, 0.1);
 }

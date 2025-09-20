@@ -1,9 +1,8 @@
 import styles from "./BookCard.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearch } from "../../../hooks/useSearch";
 import { useBooks } from "../../../hooks/useBooks";
 import { Star, Bookmark } from "lucide-react";
-import { v4 as uuidv4 } from "uuid";
 
 const BookCard = ({ book }) => {
   const { fetchBookCover } = useSearch();
@@ -15,106 +14,213 @@ const BookCard = ({ book }) => {
     isFavorite,
     isInWantToRead,
   } = useBooks();
+
   const [coverUrl, setCoverUrl] = useState(null);
   const [isLoadingCover, setIsLoadingCover] = useState(false);
+  const [coverError, setCoverError] = useState(false);
 
-  // Derive states directly from context
-  const isLiked = isFavorite(book.key);
-  const isSaved = isInWantToRead(book.key);
+  // Memoize derived states to prevent unnecessary re-renders
+  const isLiked = useMemo(() => isFavorite(book.key), [isFavorite, book.key]);
+  const isSaved = useMemo(
+    () => isInWantToRead(book.key),
+    [isInWantToRead, book.key]
+  );
 
+  // Memoize formatted data
+  const bookData = useMemo(
+    () => ({
+      title: book.title || "Unknown Title",
+      authors:
+        book.author_name && Array.isArray(book.author_name)
+          ? book.author_name
+          : book.author_name
+          ? [book.author_name]
+          : ["Unknown Author"],
+      year: book.first_publish_year || "Unknown Year",
+      coverId: book.cover_edition_key || book.cover_i,
+    }),
+    [book]
+  );
+
+  // Cover fetching with cleanup
   useEffect(() => {
-    let isMounted = true; // Flag to prevent state updates on an unmounted component
+    let isMounted = true;
 
     const getCover = async () => {
-      if (!book.cover_edition_key) {
-        // If there's no OLID, there's no point trying to fetch
-        if (isMounted) setCoverUrl(null);
+      if (!bookData.coverId) {
+        if (isMounted) {
+          setCoverUrl(null);
+          setCoverError(true);
+        }
         return;
       }
+
       setIsLoadingCover(true);
-      const url = await fetchBookCover(book.cover_edition_key);
-      // Only update state if the component is still mounted
-      if (isMounted) {
-        setCoverUrl(url);
-        setIsLoadingCover(false);
+      setCoverError(false);
+
+      try {
+        const url = await fetchBookCover(bookData.coverId, "M");
+        if (isMounted) {
+          if (url) {
+            setCoverUrl(url);
+          } else {
+            setCoverError(true);
+          }
+        }
+      } catch (error) {
+        console.warn(`Failed to fetch cover for ${book.key}:`, error);
+        if (isMounted) {
+          setCoverError(true);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoadingCover(false);
+        }
       }
     };
 
     getCover();
 
-    // Cleanup function: runs if the component unmounts before the fetch finishes
     return () => {
       isMounted = false;
     };
-  }, [fetchBookCover, book.cover_edition_key]); // Re-run if the olid changes
+  }, [fetchBookCover, bookData.coverId, book.key]);
 
-  const handleLike = () => {
-    if (isLiked) {
-      removeFromFavorites(book.key);
-    } else {
-      addToFavorites(book);
-    }
-  };
-  const handleSave = () => {
-    if (isSaved) {
-      removeFromWantToRead(book.key);
-    } else {
-      addToWantToRead(book);
-    }
-  };
+  // Event handlers with error handling
+  const handleLike = useCallback(
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      try {
+        if (isLiked) {
+          removeFromFavorites(book.key);
+        } else {
+          addToFavorites(book);
+        }
+      } catch (error) {
+        console.error("Failed to toggle favorite:", error);
+      }
+    },
+    [isLiked, book, addToFavorites, removeFromFavorites]
+  );
+
+  const handleSave = useCallback(
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      try {
+        if (isSaved) {
+          removeFromWantToRead(book.key);
+        } else {
+          addToWantToRead(book);
+        }
+      } catch (error) {
+        console.error("Failed to toggle want to read:", error);
+      }
+    },
+    [isSaved, book, addToWantToRead, removeFromWantToRead]
+  );
+
+  const handleImageError = useCallback(() => {
+    setCoverError(true);
+    setCoverUrl(null);
+  }, []);
 
   return (
-    <div className={styles.bookCard}>
-      <div className={styles.bookCover}>
+    <article
+      className={styles.bookCard}
+      role="gridcell"
+      aria-label={`${bookData.title} by ${bookData.authors.join(", ")}`}
+    >
+      <div className={styles.bookCover} aria-hidden="true">
         {isLoadingCover ? (
-          <p>Loading cover...</p>
-        ) : coverUrl ? (
-          <img src={coverUrl} alt={`Cover for ${book.title}`} />
+          <div className={styles.loadingCover} aria-label="Loading book cover">
+            <div className={styles.spinner}></div>
+          </div>
+        ) : coverUrl && !coverError ? (
+          <img
+            src={coverUrl}
+            alt={`Cover for ${bookData.title}`}
+            onError={handleImageError}
+            className={styles.coverImage}
+            loading="lazy"
+          />
         ) : (
-          <div className={styles.noCover}>No Cover</div>
-        )}
-      </div>
-      <div className={styles.info}>
-        <div className={styles.title}>{book.title}</div>
-        {book.author_name ? (
-          book.author_name.map((author) => {
-            return (
-              <div key={uuidv4()} className={styles.author}>
-                {author}
-              </div>
-            );
-          })
-        ) : (
-          <div key={uuidv4()} className={styles.author}>
-            No Author
+          <div className={styles.noCover} aria-label="No cover available">
+            <div className={styles.noCoverIcon}>📚</div>
+            <span className={styles.noCoverText}>No Cover</span>
           </div>
         )}
-        {/* <div className="author">{author}</div> */}
-        <div className="year">{book.first_publish_year}</div>
       </div>
-      <div className="buttons">
+
+      <div className={styles.info}>
+        <h3 className={styles.title} title={bookData.title}>
+          {bookData.title}
+        </h3>
+
+        <div className={styles.authors}>
+          {bookData.authors.map((author, index) => (
+            <span
+              key={`${book.key}-author-${index}`}
+              className={styles.author}
+              title={author}
+            >
+              {author}
+            </span>
+          ))}
+        </div>
+
+        <div className={styles.year} title={`Published: ${bookData.year}`}>
+          {bookData.year}
+        </div>
+      </div>
+
+      <div className={styles.actions} role="group" aria-label="Book actions">
         <button
-          className={styles.favorite}
+          className={`${styles.actionButton} ${styles.favorite} ${
+            isLiked ? styles.favoriteActive : ""
+          }`}
           onClick={handleLike}
-          title={isLiked ? "Remove from favorites" : "Add to favorites"}
+          aria-label={
+            isLiked
+              ? `Remove "${bookData.title}" from favorites`
+              : `Add "${bookData.title}" to favorites`
+          }
+          aria-pressed={isLiked}
+          type="button"
         >
           <Star
             className={styles.favoriteIcon}
             fill={isLiked ? "gold" : "transparent"}
+            stroke={isLiked ? "gold" : "currentColor"}
+            aria-hidden="true"
           />
         </button>
+
         <button
-          className={styles.save}
+          className={`${styles.actionButton} ${styles.save} ${
+            isSaved ? styles.saveActive : ""
+          }`}
           onClick={handleSave}
-          title={isSaved ? "Remove from want to read" : "Add to want to read"}
+          aria-label={
+            isSaved
+              ? `Remove "${bookData.title}" from want to read list`
+              : `Add "${bookData.title}" to want to read list`
+          }
+          aria-pressed={isSaved}
+          type="button"
         >
           <Bookmark
             className={styles.saveIcon}
             fill={isSaved ? "#6495ED" : "transparent"}
+            stroke={isSaved ? "#6495ED" : "currentColor"}
+            aria-hidden="true"
           />
         </button>
       </div>
-    </div>
+    </article>
   );
 };
 
