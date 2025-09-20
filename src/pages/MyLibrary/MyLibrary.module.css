@@ -72,3 +72,69 @@
     padding: 1rem 0;
   }
 }
+
+/* MyLibrary.module.css additions */
+
+.tab {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  font-weight: 500;
+}
+
+.tab:focus {
+  outline: 2px solid #fcf55f;
+  outline-offset: 2px;
+  z-index: 1;
+}
+
+.section {
+  transition: opacity 0.3s ease;
+}
+
+.active {
+  opacity: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+.count {
+  font-size: 0.9em;
+  opacity: 0.8;
+  margin-left: 0.5rem;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 2px dashed rgba(0, 0, 0, 0.1);
+}
+
+.emptyMessage {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.emptySubtext {
+  color: #888;
+  font-size: 0.95rem;
+}
+
+.loadingState,
+.errorState {
+  text-align: center;
+  padding: 2rem;
+}
+
+.errorMessage {
+  color: #d32f2f;
+  background: #ffebee;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #d32f2f;
+}

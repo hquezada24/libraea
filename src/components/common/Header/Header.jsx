@@ -1,22 +1,32 @@
 import styles from "./Header.module.css";
 import SearchBar from "../SearchBar/SearchBar";
 import { Link } from "react-router-dom";
+import griffinIcon from "../../../assets/griffin.png";
 
 const Header = () => {
   return (
-    <header className={styles.header}>
+    <header className={styles.header} role="banner">
       <div className={styles.logo}>
-        <img src="../../../src/assets/griffin.png" alt="" />
-        <Link to={"/"}>
-          <h1>Libraea</h1>
+        <img
+          src={griffinIcon}
+          alt="Libraea Griffin Logo"
+          className={styles.logoIcon}
+          height="40"
+        />
+        <Link to={"/"} className={styles.logoLink}>
+          <h1 className={styles.logoText}>Libraea</h1>
         </Link>
       </div>
       <SearchBar />
-      <div className={styles.link}>
+      <nav
+        className={styles.navigation}
+        role="navigation"
+        aria-label="Main navigation"
+      >
         <Link to="/my-library" className={styles.library}>
           My Library
         </Link>
-      </div>
+      </nav>
     </header>
   );
 };
