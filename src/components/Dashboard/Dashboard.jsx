@@ -22,8 +22,8 @@ const Dashboard = () => {
 
   return (
     <section className={styles.dashboard}>
-      <div className={styles.favorites}>
-        <h2>Your Favorites</h2>
+      <div className={styles.favorites} aria-labelledby="favorites-heading">
+        <h2 id="favorites-heading">Your Favorites</h2>
         <div className={hasFavorites ? styles.grid : styles.flex}>
           {hasFavorites ? (
             favoriteSample.map((book) => {
@@ -34,7 +34,9 @@ const Dashboard = () => {
               );
             })
           ) : (
-            <p>Need Inspiration? </p>
+            <p role="status">
+              You don’t have any favorite books yet. Need inspiration?
+            </p>
           )}
           {hasFavorites && (
             <div className={styles.btn}>
@@ -48,10 +50,13 @@ const Dashboard = () => {
         <div className={hasWantToRead ? styles.grid : styles.flex}>
           {hasWantToRead ? (
             wantToReadSample.map((book) => {
-              return <BookCard key={uuid()} book={book} />;
+              return <BookCard key={`favorite-${book.key}`} book={book} />;
             })
           ) : (
-            <p>No saved books.</p>
+            <p role="status">
+              You don’t have any saved books yet. Need inspiration? Search for
+              books.
+            </p>
           )}
           {hasWantToRead && (
             <div className={styles.btn}>
