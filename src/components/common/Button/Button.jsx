@@ -1,9 +1,9 @@
 import styles from "./Button.module.css";
 import { Link } from "react-router-dom";
 
-const Button = ({ text, link = "" }) => {
+const Button = ({ text, link = "", onClick = "" }) => {
   return (
-    <button className={styles.button}>
+    <button className={styles.button} onClick={onClick ? onClick : ""}>
       {link ? (
         <Link to={link} className={styles.link}>
           {text}

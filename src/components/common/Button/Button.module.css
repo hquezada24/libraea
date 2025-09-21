@@ -45,11 +45,12 @@
   background-size: 200% auto;
   background-position: left top;
   border-color: transparent;
-  color: #464646;
+  color: cornsilk;
+  font-family: inherit;
 }
 
 .button:hover {
   background-position: right bottom;
   animation: pulse 1s ease-in-out;
-  color: #000;
+  color: cornsilk;
 }
