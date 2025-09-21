@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./NotFound.module.css";
 import { ArrowLeft, Home, Search, BookOpen } from "lucide-react";
@@ -17,31 +17,34 @@ const NotFound = () => {
     };
   }, []);
 
-  const handleGoBack = () => {
+  const handleGoBack = useCallback(() => {
     // Check if there's history to go back to
     if (window.history.length > 1) {
       navigate(-1);
     } else {
       navigate("/");
     }
-  };
+  }, [navigate]);
 
-  const handleKeyboardShortcuts = (event) => {
-    // Add keyboard shortcuts for better accessibility
-    if (event.key === "h" || event.key === "H") {
-      navigate("/");
-    } else if (event.key === "s" || event.key === "S") {
-      navigate("/search");
-    } else if (event.key === "Escape") {
-      handleGoBack();
-    }
-  };
+  const handleKeyboardShortcuts = useCallback(
+    (event) => {
+      // Add keyboard shortcuts for better accessibility
+      if (event.key === "h" || event.key === "H") {
+        navigate("/");
+      } else if (event.key === "s" || event.key === "S") {
+        navigate("/search");
+      } else if (event.key === "Escape") {
+        handleGoBack();
+      }
+    },
+    [navigate, handleGoBack]
+  );
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyboardShortcuts);
     return () =>
       document.removeEventListener("keydown", handleKeyboardShortcuts);
-  }, []);
+  }, [handleKeyboardShortcuts]);
 
   return (
     <div className={styles.notFound} role="main">
