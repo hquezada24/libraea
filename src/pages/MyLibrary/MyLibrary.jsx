@@ -15,7 +15,7 @@ const MyLibrary = () => {
   // Show loading state
   if (!isLoaded) {
     return (
-      <div className={styles.library}>
+      <div className={styles.library} aria-live="polite">
         <div className={styles.loadingState}>
           <h2 className={styles.headline}>My Library</h2>
           <p>Loading your books...</p>
@@ -26,7 +26,7 @@ const MyLibrary = () => {
 
   if (error) {
     return (
-      <div className={styles.library}>
+      <div className={styles.library} aria-live="assertive">
         <div className={styles.errorState}>
           <h2 className={styles.headline}>My Library</h2>
           <p className={styles.errorMessage}>
@@ -41,8 +41,15 @@ const MyLibrary = () => {
     setActiveOption(section);
   };
 
+  const handleKeyDown = (e, section) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleTabChange(section);
+    }
+  };
+
   return (
-    <div className={styles.library}>
+    <main className={styles.library}>
       <h2 className={styles.headline}>My Library</h2>
 
       <div
@@ -61,6 +68,7 @@ const MyLibrary = () => {
           aria-selected={activeOption === LIBRARY_SECTIONS.FAVORITES}
           aria-controls="favorites-panel"
           id="favorites-tab"
+          onKeyDown={handleKeyDown}
         >
           Favorites
         </button>
@@ -75,6 +83,7 @@ const MyLibrary = () => {
           aria-selected={activeOption === LIBRARY_SECTIONS.WANT_TO_READ}
           aria-controls="want-to-read-panel"
           id="want-to-read-tab"
+          onKeyDown={handleKeyDown}
         >
           Want to read
         </button>
@@ -150,7 +159,7 @@ const MyLibrary = () => {
           </div>
         </section>
       </div>
-    </div>
+    </main>
   );
 };
 
