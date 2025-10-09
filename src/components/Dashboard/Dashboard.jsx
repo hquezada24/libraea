@@ -1,7 +1,6 @@
 import styles from "./Dashboard.module.css";
 import { useBooks } from "../../hooks/useBooks";
 import BookCard from "../common/BookCard/BookCard";
-import { v4 as uuid } from "uuid";
 import Button from "../common/Button/Button";
 import Searches from "../common/Searches/Searches";
 
@@ -29,7 +28,7 @@ const Dashboard = () => {
             favoriteSample.map((book) => {
               return (
                 <>
-                  <BookCard key={uuid()} book={book} />
+                  <BookCard key={`favorite-${book.key}`} book={book} />
                 </>
               );
             })
@@ -70,7 +69,7 @@ const Dashboard = () => {
         <div className={`${styles.flex} ${styles.searches}`}>
           {hasRecentlySearched ? (
             recentlySearchedSample.map((query) => {
-              return <Searches key={uuid()} text={query.query} />;
+              return <Searches key={`favorite-${query}`} text={query.query} />;
             })
           ) : (
             <p>Search. Use the bar at the top. </p>
