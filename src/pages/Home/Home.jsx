@@ -4,10 +4,10 @@ import Dashboard from "../../components/Dashboard/Dashboard";
 
 const Home = () => {
   return (
-    <div className={styles.home}>
+    <main className={styles.home}>
       <Hero />
       <Dashboard />
-    </div>
+    </main>
   );
 };
 
