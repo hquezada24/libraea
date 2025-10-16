@@ -59,7 +59,7 @@ npm run dev
 
 ### Search Results
 
-![Search Results](./public/search.png)
+![Search Results](./public/search-results.png)
 
 ### Favorites List
 
