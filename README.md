@@ -28,22 +28,22 @@ With its clean UI, responsive design, and simple navigation, Libraea serves as b
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/hquezada24/libraea.git
-cd libraea
-```
+   ```bash
+   git clone https://github.com/hquezada24/libraea.git
+   cd libraea
+   ```
 
 1. Install dependencies:
 
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 1. Start the development server:
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
 1. Open in your browser: [http://localhost:5473](http://localhost:5473)
 
