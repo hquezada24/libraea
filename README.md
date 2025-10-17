@@ -45,7 +45,7 @@ npm install
 npm run dev
 ```
 
-1. Open in your browser: http://localhost:5473
+1. Open in your browser: [http://localhost:5473](http://localhost:5473)
 
 ## Live Demo
 
